@@ -25,7 +25,7 @@ public class TransactionsController {
     }
 
     @GetMapping("/all")
-    public Mono<ConcurrentNavigableMap<Long, List<Transaction>>> getAll(){
+    public Mono<ConcurrentNavigableMap<Long, List<Transaction>>> getAll() {
         return storeComponent.getAll();
     }
 

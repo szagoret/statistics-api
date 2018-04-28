@@ -1,21 +1,24 @@
 package com.szagoret.n26.statistics.repository;
 
 import com.szagoret.n26.statistics.datastore.ReactiveTransactionsDataStoreComponent;
-import com.szagoret.n26.statistics.models.Statistic;
+import com.szagoret.n26.statistics.models.Transaction;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
+import java.util.concurrent.ConcurrentNavigableMap;
 
 @Repository
 public class StatisticsRepositoryBean implements StatisticsRepository {
 
-    private final ReactiveTransactionsDataStoreComponent storeComponent;
+    private final ReactiveTransactionsDataStoreComponent dataStoreComponent;
 
-    public StatisticsRepositoryBean(ReactiveTransactionsDataStoreComponent storeComponent) {
-        this.storeComponent = storeComponent;
+    public StatisticsRepositoryBean(ReactiveTransactionsDataStoreComponent dataStoreComponent) {
+        this.dataStoreComponent = dataStoreComponent;
     }
 
     @Override
-    public Mono<Statistic> getStatistics() {
-        return Mono.just(new Statistic(1.2, 3.4, 4.6, 3.0, 2.2));
+    public Mono<ConcurrentNavigableMap<Long, List<Transaction>>> getStatistics(Long timeFrame) {
+        return dataStoreComponent.findTransactionsWindow(timeFrame);
     }
 }

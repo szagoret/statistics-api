@@ -13,5 +13,5 @@ public class Statistic {
     private Double avg;
     private Double max;
     private Double min;
-    private Double count;
+    private Long count;
 }
