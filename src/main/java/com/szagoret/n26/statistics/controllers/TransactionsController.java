@@ -31,11 +31,6 @@ public class TransactionsController {
         this.statisticsProperties = statisticsProperties;
     }
 
-    @GetMapping("/all")
-    public Mono<ConcurrentNavigableMap<Long, List<Transaction>>> getAll() {
-        return storeComponent.getAll();
-    }
-
     @PostMapping
     public Mono<ResponseEntity<Void>> addTransaction(@RequestBody @Valid Transaction transaction) {
         HttpStatus httpStatus = computeHttpStatus(transaction.getTimestamp());

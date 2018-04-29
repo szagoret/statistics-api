@@ -3,44 +3,40 @@ package com.szagoret.n26.statistics.service;
 import com.szagoret.n26.statistics.config.StatisticsProperties;
 import com.szagoret.n26.statistics.models.Statistic;
 import com.szagoret.n26.statistics.models.Transaction;
-import com.szagoret.n26.statistics.repository.StatisticsRepository;
+import com.szagoret.n26.statistics.repository.TransactionsRepository;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.stream.Collectors;
+
+import static com.szagoret.n26.statistics.util.DateUtils.secondsBefore;
 
 
 @Service
 public class StatisticsServiceBean implements StatisticsService {
 
-    private final StatisticsRepository statisticsRepository;
+    private final TransactionsRepository transactionsRepository;
     private final StatisticsProperties statisticsProperties;
 
-    public StatisticsServiceBean(StatisticsRepository statisticsRepository, StatisticsProperties statisticsProperties) {
-        this.statisticsRepository = statisticsRepository;
+    public StatisticsServiceBean(TransactionsRepository transactionsRepository,
+                                 StatisticsProperties statisticsProperties) {
+        this.transactionsRepository = transactionsRepository;
         this.statisticsProperties = statisticsProperties;
     }
 
+
     @Override
     public Mono<Statistic> getStatistics() {
-        Long startKeyToSearch = Instant.now().minus(statisticsProperties.getStatistics().getTimeFrameLength(), ChronoUnit.SECONDS).toEpochMilli();
-        return statisticsRepository.getStatistics(startKeyToSearch)
-                .map(txsMap ->
-                        txsMap
-                                .values()
-                                .stream()
-                                .flatMap(t -> t.stream())
-                                .collect(Collectors.summarizingDouble(Transaction::getAmount))
-                ).map(resultStatistics ->
+        return transactionsRepository.findTransactions(secondsBefore(statisticsProperties.getStatistics().getTimeFrameLength()))
+                .collect(Collectors.summarizingDouble(Transaction::getAmount))
+                .map(summaryStatistics ->
                         new Statistic(
-                                resultStatistics.getSum(),
-                                resultStatistics.getAverage(),
-                                resultStatistics.getMax(),
-                                resultStatistics.getMin(),
-                                resultStatistics.getCount()
-                        ));
+                                summaryStatistics.getSum(),
+                                summaryStatistics.getAverage(),
+                                summaryStatistics.getMax(),
+                                summaryStatistics.getMin(),
+                                summaryStatistics.getCount()
 
+                        ));
     }
 }
