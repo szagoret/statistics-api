@@ -1,6 +1,6 @@
 # Code Challenge from N26
-Restful API for statistics for persisting transactions in a custom DataStore 
-and and provide statistics about them.
+Restful API for persisting transactions in a custom DataStore 
+and provide statistics about them.
 
 ### Running
 
