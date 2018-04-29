@@ -25,10 +25,6 @@ public class ReactiveTransactionsDataStoreComponent {
         return Flux.fromStream(concurrentNavigableMap.tailMap(fromKey, true).values().stream().flatMap(Collection::stream));
     }
 
-    public Mono<ConcurrentNavigableMap<Long, List<Transaction>>> getAllMap() {
-        return Mono.just(concurrentNavigableMap);
-    }
-
     public Flux<Transaction> getAll() {
         return Flux.fromStream(concurrentNavigableMap.values().stream().flatMap(Collection::stream));
     }
