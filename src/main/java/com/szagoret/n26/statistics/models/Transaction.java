@@ -1,5 +1,6 @@
 package com.szagoret.n26.statistics.models;
 
+import com.szagoret.n26.statistics.validation.PastDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ public class Transaction {
     @NotNull
     private Double amount;
 
-    @NotNull
+    @PastDate
     private Long timestamp;
 
 
