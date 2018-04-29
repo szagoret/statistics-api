@@ -6,14 +6,15 @@ import com.szagoret.n26.statistics.models.Transaction;
 import com.szagoret.n26.statistics.service.TransactionsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.List;
-import java.util.concurrent.ConcurrentNavigableMap;
 
 @RestController
 @RequestMapping("/transactions")
