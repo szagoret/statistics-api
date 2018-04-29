@@ -4,17 +4,17 @@ and and provide statistics about them.
 
 ### Running
 
-```zsh
+```shell
 ./gradlew bootRun
 ```
 
 ### Testing
 
-```zsh
+```shell
 ./gradlew clean test
 ```
 
-##### Endpoints are be available at `http://localhost:8080/`
+Endpoints are be available at `http://localhost:8080/`
 
 ##### Methods
 
