@@ -16,6 +16,6 @@ public class TransactionsServiceBean implements TransactionsService {
 
     @Override
     public Mono<Void> addTransaction(Mono<Transaction> transaction) {
-        return transactionsRepository.addTransaction(transaction).log();
+        return transactionsRepository.addTransaction(transaction);
     }
 }

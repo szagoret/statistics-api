@@ -7,6 +7,8 @@ import com.szagoret.n26.statistics.repository.StatisticsRepository;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.stream.Collectors;
 
 
@@ -23,7 +25,8 @@ public class StatisticsServiceBean implements StatisticsService {
 
     @Override
     public Mono<Statistic> getStatistics() {
-        return statisticsRepository.getStatistics(statisticsProperties.getStatistics().getTimeFrameLength())
+        Long startKeyToSearch = Instant.now().minus(statisticsProperties.getStatistics().getTimeFrameLength(), ChronoUnit.SECONDS).toEpochMilli();
+        return statisticsRepository.getStatistics(startKeyToSearch)
                 .map(txsMap ->
                         txsMap
                                 .values()

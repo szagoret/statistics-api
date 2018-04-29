@@ -1,8 +1,6 @@
 package com.szagoret.n26.statistics.datastore;
 
 import com.szagoret.n26.statistics.models.Transaction;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
@@ -21,8 +19,8 @@ public class ReactiveTransactionsDataStoreComponent {
         this.concurrentNavigableMap = new ConcurrentSkipListMap<>();
     }
 
-    public Mono<ConcurrentNavigableMap<Long, List<Transaction>>> findTransactionsWindow(Long windowLength) {
-        return Mono.just(concurrentNavigableMap.headMap(windowLength));
+    public Mono<ConcurrentNavigableMap<Long, List<Transaction>>> findTransactionsWindow(Long fromKey) {
+        return Mono.just(concurrentNavigableMap.tailMap(fromKey, true));
     }
 
     public Mono<ConcurrentNavigableMap<Long, List<Transaction>>> getAll() {
@@ -41,19 +39,5 @@ public class ReactiveTransactionsDataStoreComponent {
                 })
         );
         return result.thenEmpty(Mono.empty());
-    }
-
-    /**
-     * TODO Delete at the end
-     *
-     * @return
-     */
-    @Bean
-    CommandLineRunner setUp() {
-        return args ->
-                concurrentNavigableMap.put(20L, Arrays.asList(
-                        new Transaction(20.4, 1234567890L),
-                        new Transaction(40.2, 1234567891L)
-                ));
     }
 }
