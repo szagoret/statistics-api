@@ -1,4 +1,3 @@
-# Code Challenge from N26
 Restful API for persisting transactions in a custom DataStore 
 and provide statistics about them.
 
